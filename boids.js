@@ -170,24 +170,32 @@ class boid {
 
     };
 
-    
 }
 
 function resizeCanvas() {
     const canvas = boidSky.canvas;
-    
-    // Set canvas display size
-    const width = window.innerWidth * 0.95;
-    const height = window.innerHeight * 0.7;
+    const dpr = window.devicePixelRatio || 1;
 
-    // Update variables
-    skyWidth = width;
-    skyHeight = height;
+    // CSS size
+    const cssWidth = window.innerWidth * 0.95;
+    const cssHeight = window.innerHeight * 0.7;
 
-    // Set canvas size in pixels to match CSS
-    canvas.width = width;
-    canvas.height = height;
+    // Update globals
+    skyWidth = cssWidth;
+    skyHeight = cssHeight;
 
+    // Set the canvas width and height based on the DPR
+    canvas.width = cssWidth * dpr;
+    canvas.height = cssHeight * dpr;
+
+    // Set the CSS display size
+    canvas.style.width = `${cssWidth}px`;
+    canvas.style.height = `${cssHeight}px`;
+
+    // Scale the drawing context
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset any existing transform
+    ctx.scale(dpr, dpr);
 }
 
 function updateSky() {

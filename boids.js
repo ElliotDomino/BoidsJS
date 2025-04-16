@@ -1,10 +1,10 @@
 // Roughly following the W3Schools HTML Game Example, and https://vergenet.net/~conrad/boids/pseudocode.html psudeocode
 // Elliot Chrystal 4/15/2025
 
-var skyWidth = 350
-var skyHeight = 550
+var skyWidth = 0;
+var skyHeight = 0;
 var intervalTime = 20;
-var numBoids = 35;
+var numBoids = 50;
 var padding = 30;
 var lineHeight = 15
 
@@ -23,9 +23,7 @@ var boidSky = {
     canvas : document.getElementById("boidSky"),
 
     start : function() {
-
-        this.canvas.width = skyWidth;
-        this.canvas.height = skyHeight;
+        
         this.context = this.canvas.getContext("2d");
         this.frameNo = 0;
         this.interval = setInterval(updateSky, intervalTime);
@@ -175,6 +173,23 @@ class boid {
     
 }
 
+function resizeCanvas() {
+    const canvas = boidSky.canvas;
+    
+    // Set canvas display size
+    const width = window.innerWidth * 0.95;
+    const height = window.innerHeight * 0.7;
+
+    // Update variables
+    skyWidth = width;
+    skyHeight = height;
+
+    // Set canvas size in pixels to match CSS
+    canvas.width = width;
+    canvas.height = height;
+
+}
+
 function updateSky() {
 
     boidSky.clear();
@@ -183,13 +198,18 @@ function updateSky() {
 
 }
 
+console.log(boids);
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
 // Initialize boids in array
 for (var i = 0; i < numBoids; i++) {
 
     var curBoid = new boid(
         i,
-        padding + (Math.random() * (skyWidth - padding * 2)),
-        padding + (Math.random() * (skyHeight - padding * 2)),
+        skyWidth / 2,
+        skyHeight / 2,
         Math.random() * 2,
         Math.random() * 2,
         (Math.random() * 360));
@@ -197,7 +217,5 @@ for (var i = 0; i < numBoids; i++) {
     boids.push(curBoid);
 
 }
-
-console.log(boids);
 
 boidSky.start();
